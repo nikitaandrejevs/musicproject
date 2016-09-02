@@ -1,9 +1,42 @@
-
-// Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
 // Variables
 @import "variables";
-
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+//-----------Global Variables---------------------
+$header-height: 60px;
+
+
+
+//-----------Custom elements---------------------
+.solid {
+  background-color: deepskyblue;
+  border: 1px solid black;
+}
+
+
+//-----------Main elements-----------------------
+a {
+  color: $text-color !important;
+}
+
+header {
+  height: $header-height;
+  line-height: 60px;
+}
+
+
+
+
+.Level {
+  padding-left: 20px;
+}
+
+
+
+.Help {
+  padding-right: 20px;
+  padding-top: 18px;
+}
+
+

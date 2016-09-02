@@ -14,6 +14,11 @@ require('laravel-elixir-vue');
  */
 
 elixir(mix => {
-    mix.sass('app.scss')
-       .browserify('app.js');
+    mix.sass('app.scss','resources/assets/css/custom.css')
+        .styles([
+            'normalize.css',
+            'custom.css'
+            ],
+            'public/css/app.css')
+        .browserify('app.js');
 });
