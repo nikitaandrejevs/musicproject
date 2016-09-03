@@ -5,7 +5,7 @@ class Layout extends React.Component {
         super();
     }
 
-    render () {
+    render() {
         return <div>
 
         </div>;

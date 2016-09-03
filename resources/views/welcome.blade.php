@@ -6,50 +6,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>React testing</title>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.css">
         <link rel="stylesheet" href="css/app.css">
 
     </head>
     <body>
-    <div class="container-fluid">
-        <div class="row hidden">
-            <div class="col-md-1 solid">1</div>
-            <div class="col-md-1 solid">2</div>
-            <div class="col-md-1 solid">3</div>
-            <div class="col-md-1 solid">4</div>
-            <div class="col-md-1 solid">5</div>
-            <div class="col-md-1 solid">6</div>
-            <div class="col-md-1 solid">7</div>
-            <div class="col-md-1 solid">8</div>
-            <div class="col-md-1 solid">9</div>
-            <div class="col-md-1 solid">10</div>
-            <div class="col-md-1 solid">11</div>
-            <div class="col-md-1 solid">12</div>
-        </div>
-        <header>
-            <div class="row">
-                <div class="col-md-2 col-xs-4">
-                    <div class="Level">
-                        lvl: 1
-                    </div>
-                </div>
 
-                <div class="col-md-2 col-md-offset-8 col-xs-4 col-xs-offset-4">
-                    <div class="Help">
+        <a href="#">
+            <i class="material-icons pull-right">help_outline</i>
+        </a>
 
-                        <a href="#">
-                            <i class="material-icons pull-right">help_outline</i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="row">
-
-        </div>
-
+        <audio controls loop>
+            <source src="{{ Storage::url('Notes/001-G3.mp3') }}" type="audio/mp3">
+        </audio>
         <div id="app">
+
+
+
         </div>
-    </div>
     <script src="js/app.js"></script>
     </body>
 </html>
