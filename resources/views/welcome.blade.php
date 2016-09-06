@@ -13,12 +13,12 @@
     <body>
 
         <a href="#">
-            <i class="material-icons pull-right">help_outline</i>
+            <i class="material-icons">help_outline</i>
         </a>
 
-        <audio controls loop>
-            <source src="{{ Storage::url('Notes/001-G3.mp3') }}" type="audio/mp3">
-        </audio>
+        {{--<audio>--}}
+            {{--<source src="a.mp3" type="audio/mp3"/>--}}
+        {{--</audio>--}}
         <div id="app">
 
 
