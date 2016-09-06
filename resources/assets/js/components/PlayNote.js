@@ -4,33 +4,39 @@ import {Button, ButtonToolbar} from 'react-bootstrap';
 import {Image} from 'react-bootstrap'
 
 var Howl = require('howler').Howl;
-var sound = new Howl({
-    // src: ['./storage/app/public/a.mp3']
-    src: ['storage/a.mp3']
-});
-
+var sound;
 
 class PlayNote extends React.Component {
     constructor(){
         super();
     }
-    Play(){
+    play(){
         sound.play();
+        console.log(this.props.sound);
     }
+    initHowler(){
+        sound = new Howl({
+            src: ['storage/' + this.props.sound]
+        });
+    }
+
+
+
     render() {
+        this.initHowler();
         const buttonStyle = {
-            // border: 'none'
+            width: '100%'
         };
 
         return <div>
             <ButtonToolbar>
                 <Button
-                    onClick={this.Play}
+                    onClick={this.play.bind(this)}
                     style={buttonStyle}
                 >
                     <Image
                         bsClass='Image--fit '
-                        src="/assets/note.png" rounded />
+                        src="/assets/scale.jpg" rounded />
                 </Button>
             </ButtonToolbar>
 

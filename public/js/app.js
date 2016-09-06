@@ -41381,6 +41381,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var soundList = ["a4.mp3", "b4.mp3", "c4.mp3", "d4.mp3", "e4.mp3", "f4.mp3", "g4.mp3", "a5.mp3"];
+
 var Layout = function (_React$Component) {
     _inherits(Layout, _React$Component);
 
@@ -41391,12 +41393,16 @@ var Layout = function (_React$Component) {
     }
 
     _createClass(Layout, [{
+        key: 'changeSound',
+        value: function changeSound() {}
+    }, {
         key: 'render',
         value: function render() {
             var fillerStyle = {
                 height: '25vh'
             };
 
+            var sound = "a4.mp3";
             return _react2.default.createElement(
                 _reactBootstrap.Grid,
                 {
@@ -41413,7 +41419,7 @@ var Layout = function (_React$Component) {
                     _react2.default.createElement(
                         _reactBootstrap.Col,
                         {
-                            md: 3,
+                            md: 4,
                             mdOffset: 4
                         },
                         _react2.default.createElement(_Note2.default, null),
@@ -41426,11 +41432,27 @@ var Layout = function (_React$Component) {
                     _react2.default.createElement(
                         _reactBootstrap.Col,
                         {
-                            md: 3,
+                            md: 4,
                             mdOffset: 4
                         },
-                        _react2.default.createElement(_PlayNote2.default, null),
+                        _react2.default.createElement(_PlayNote2.default, { sound: sound }),
                         ' '
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Row,
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        {
+                            md: 2,
+                            mdOffset: 6
+                        },
+                        _react2.default.createElement(
+                            _reactBootstrap.ButtonToolbar,
+                            null,
+                            _react2.default.createElement(_reactBootstrap.Button, { onClick: this.changeSound })
+                        )
                     )
                 )
             );
@@ -41481,7 +41503,7 @@ var Note = function (_React$Component) {
     _createClass(Note, [{
         key: 'render',
         value: function render() {
-            var notes = ["A", "B", "C", "D", "E", "F", "G"];
+            var notes = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
 
             return _react2.default.createElement(
                 _reactBootstrap.ButtonToolbar,
@@ -41536,10 +41558,17 @@ var NoteButton = function (_React$Component) {
             var noteButtonStyle = {
                 flexGrow: '1'
             };
+            var popoverImageStyle = {
+                width: '100%',
+                height: '100%'
+            };
+
+            var imagePath = "assets/notes/note_" + this.props.note.toLowerCase() + ".png";
+
             var popoverHoverFocus = _react2.default.createElement(
                 _reactBootstrap.Popover,
-                { id: 'popover-trigger-hover-focus', title: 'Scale ${this.props.note} Note' },
-                'Note\'s scale Picture.'
+                { id: 'popover-trigger-hover-focus' },
+                _react2.default.createElement(_reactBootstrap.Image, { src: imagePath, style: popoverImageStyle })
             );
 
             return _react2.default.createElement(
@@ -41590,10 +41619,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var Howl = require('howler').Howl;
-var sound = new Howl({
-    // src: ['./storage/app/public/a.mp3']
-    src: ['storage/a.mp3']
-});
+var sound;
 
 var PlayNote = function (_React$Component) {
     _inherits(PlayNote, _React$Component);
@@ -41605,15 +41631,24 @@ var PlayNote = function (_React$Component) {
     }
 
     _createClass(PlayNote, [{
-        key: 'Play',
-        value: function Play() {
+        key: 'play',
+        value: function play() {
             sound.play();
+            console.log(this.props.sound);
+        }
+    }, {
+        key: 'initHowler',
+        value: function initHowler() {
+            sound = new Howl({
+                src: ['storage/' + this.props.sound]
+            });
         }
     }, {
         key: 'render',
         value: function render() {
+            this.initHowler();
             var buttonStyle = {
-                // border: 'none'
+                width: '100%'
             };
 
             return _react2.default.createElement(
@@ -41625,12 +41660,12 @@ var PlayNote = function (_React$Component) {
                     _react2.default.createElement(
                         _reactBootstrap.Button,
                         {
-                            onClick: this.Play,
+                            onClick: this.play.bind(this),
                             style: buttonStyle
                         },
                         _react2.default.createElement(_reactBootstrap.Image, {
                             bsClass: 'Image--fit ',
-                            src: '/assets/note.png', rounded: true })
+                            src: '/assets/scale.jpg', rounded: true })
                     )
                 )
             );
