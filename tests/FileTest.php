@@ -25,7 +25,7 @@ class FileTest extends TestCase
         $file = new Handler("001-G3.mp3");
         $this->assertEquals(20897, strlen($file->getContent()));
 
-        $result = $file->save("/Users/Xors/MusicProject/storage/app/Notes/" . "mfile.txt");
+        $result = $file->save(storage_path(). "/Notes/" . "mfile.txt");
         $this->assertEquals(true, $result);
 
         $savedFile = new Handler("mfile.txt");

@@ -15,11 +15,13 @@ class CreateAudioTable extends Migration
     {
         Schema::create('audio', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('filename');
+            $table->string('hashed');
             $table->string('title');
             $table->string('extension')->nullable;
             $table->binary('file')->nullable;
-            $table->string('path');
-            $table->timestamps();
+//            $table->string('path');
+//            $table->timestamps();
         });
     }
 
