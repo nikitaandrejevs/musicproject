@@ -42656,12 +42656,27 @@ var Layout = function (_React$Component) {
         _this.state = {
             sound: '',
             hashed: '',
-            status: ''
+            status: '',
+            showHelp: false
         };
         return _this;
     }
 
     _createClass(Layout, [{
+        key: 'openHelp',
+        value: function openHelp() {
+            this.setState({
+                showHelp: true
+            });
+        }
+    }, {
+        key: 'closeHelp',
+        value: function closeHelp() {
+            this.setState({
+                showHelp: false
+            });
+        }
+    }, {
         key: 'flashMessage',
         value: function flashMessage(status) {
             var _this2 = this;
@@ -42712,74 +42727,103 @@ var Layout = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this5 = this;
-
-            _axios2.default.get('/api/sound/').then(function (response) {
-                var file = response.data.file;
-                var hashed = response.data.hashed;
-                _this5.setState({ sound: file, hashed: hashed });
-            }).catch(function (error) {
-                console.log(error);
-            });
+            // axios.get('/api/sound/')
+            //     .then(response => {
+            //         let file = response.data.file;
+            //         let hashed = response.data.hashed;
+            //         this.setState({ sound: file, hashed });
+            //     })
+            //     .catch(error => { console.log(error); });
+            this.changeSound();
         }
     }, {
         key: 'render',
         value: function render() {
-
             var fillerStyle = {
                 height: '25vh'
             };
+
             return _react2.default.createElement(
-                _reactBootstrap.Grid,
-                {
-                    bsClass: "container",
-                    fluid: true },
+                'div',
+                null,
                 _react2.default.createElement(
-                    _reactBootstrap.Row,
-                    null,
-                    _react2.default.createElement(_reactBootstrap.Col, { md: 4, mdOffset: 4, style: fillerStyle })
-                ),
-                _react2.default.createElement(
-                    _reactBootstrap.Row,
-                    null,
+                    _reactBootstrap.Modal,
+                    { show: this.state.showHelp, onHide: this.closeHelp.bind(this) },
                     _react2.default.createElement(
-                        _reactBootstrap.Col,
-                        {
-                            md: 4,
-                            mdOffset: 4
-                        },
-                        _react2.default.createElement(_Note2.default, { checkNote: this.checkNote.bind(this) }),
-                        '  '
-                    )
-                ),
-                _react2.default.createElement(
-                    _reactBootstrap.Row,
-                    null,
-                    _react2.default.createElement(
-                        _reactBootstrap.Col,
-                        {
-                            md: 4,
-                            mdOffset: 4
-                        },
-                        _react2.default.createElement(_PlayNote2.default, { sound: this.state.sound }),
-                        ' '
-                    )
-                ),
-                _react2.default.createElement(
-                    _reactBootstrap.Row,
-                    null,
-                    _react2.default.createElement(
-                        _reactBootstrap.Col,
-                        { md: 4, mdOffset: 4, style: fillerStyle },
+                        _reactBootstrap.Modal.Header,
+                        null,
                         _react2.default.createElement(
-                            _reactBootstrap.Fade,
-                            { timeout: 600, 'in': this.state.status ? true : false },
+                            _reactBootstrap.Modal.Title,
+                            null,
+                            'Violin Pitch Training application'
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Grid,
+                    {
+                        bsClass: "container",
+                        fluid: true },
+                    _react2.default.createElement(
+                        _reactBootstrap.Row,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { md: 1, mdOffset: 11 },
                             _react2.default.createElement(
-                                'p',
-                                { className: fadeClass },
-                                ' ',
-                                this.state.status,
-                                ' '
+                                'i',
+                                { onClick: this.openHelp.bind(this), className: 'material-icons md-48 Icon' },
+                                'help_outline'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Row,
+                        null,
+                        _react2.default.createElement(_reactBootstrap.Col, { md: 4, mdOffset: 4, style: fillerStyle })
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Row,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            {
+                                md: 4,
+                                mdOffset: 4
+                            },
+                            _react2.default.createElement(_Note2.default, { checkNote: this.checkNote.bind(this) }),
+                            '  '
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Row,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            {
+                                md: 4,
+                                mdOffset: 4
+                            },
+                            _react2.default.createElement(_PlayNote2.default, { sound: this.state.sound }),
+                            ' '
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Row,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { md: 4, mdOffset: 4, style: fillerStyle },
+                            _react2.default.createElement(
+                                _reactBootstrap.Fade,
+                                { timeout: 600, 'in': this.state.status ? true : false },
+                                _react2.default.createElement(
+                                    'p',
+                                    { className: fadeClass },
+                                    ' ',
+                                    this.state.status,
+                                    ' '
+                                )
                             )
                         )
                     )

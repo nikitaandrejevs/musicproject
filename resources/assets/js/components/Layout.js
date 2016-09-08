@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { Fade } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import Note from './Note';
 import PlayNote from './PlayNote';
@@ -18,9 +19,22 @@ class Layout extends React.Component {
         this.state = {
             sound: '',
             hashed: '',
-            status: ''
+            status: '',
+            showHelp: false
         };
     }
+    openHelp() {
+        this.setState({
+            showHelp: true
+        });
+    };
+
+    closeHelp(){
+        this.setState({
+            showHelp: false
+        });
+    }
+
     flashMessage(status){
         this.setState({
             status
@@ -61,54 +75,71 @@ class Layout extends React.Component {
     }
 
     componentDidMount(){
-        axios.get('/api/sound/')
-            .then(response => {
-                let file = response.data.file;
-                let hashed = response.data.hashed;
-                this.setState({ sound: file, hashed });
-            })
-            .catch(error => { console.log(error); });
+        // axios.get('/api/sound/')
+        //     .then(response => {
+        //         let file = response.data.file;
+        //         let hashed = response.data.hashed;
+        //         this.setState({ sound: file, hashed });
+        //     })
+        //     .catch(error => { console.log(error); });
+        this.changeSound();
     }
 
     render() {
-
         const fillerStyle = {
             height: '25vh'
         };
-        return <Grid
-            bsClass={"container"}
-            fluid={true}>
-            <Row>
-                <Col md={4} mdOffset={4} style={fillerStyle}>
-                </Col>
-            </Row>
-            <Row>
-                <Col
-                    md={4}
-                    mdOffset={4}
-                >
 
-                    <Note checkNote={this.checkNote.bind(this)}/>  {/*Note Component*/}
+        return <div>
+            <Modal show={this.state.showHelp} onHide={this.closeHelp.bind(this)}>
+                <Modal.Header>
+                    <Modal.Title>
+                        Violin Pitch Training application
+                    </Modal.Title>
+                </Modal.Header>
+            </Modal>
+            <Grid
+                bsClass={"container"}
+                fluid={true}>
+                <Row>
+                    <Col md={1} mdOffset={11}>
+                        <i onClick={this.openHelp.bind(this)} className="material-icons md-48 Icon">
+                            help_outline
+                        </i>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={4} mdOffset={4} style={fillerStyle}>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col
+                        md={4}
+                        mdOffset={4}
+                    >
 
-                </Col>
-            </Row>
-            <Row>
-                <Col
-                    md={4}
-                    mdOffset={4}
-                >
-                    <PlayNote sound={this.state.sound} /> {/*PlayNote Component*/}
+                        <Note checkNote={this.checkNote.bind(this)}/>  {/*Note Component*/}
 
-                </Col>
-            </Row>
-            <Row>
-                <Col md={4} mdOffset={4} style={fillerStyle}>
-                    <Fade timeout={600}  in={this.state.status ? true : false}>
-                        <p className={fadeClass}> {this.state.status} </p>
-                    </Fade>
-                </Col>
-            </Row>
-        </Grid>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col
+                        md={4}
+                        mdOffset={4}
+                    >
+                        <PlayNote sound={this.state.sound} /> {/*PlayNote Component*/}
+
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={4} mdOffset={4} style={fillerStyle}>
+                        <Fade timeout={600}  in={this.state.status ? true : false}>
+                            <p className={fadeClass}> {this.state.status} </p>
+                        </Fade>
+                    </Col>
+                </Row>
+            </Grid>
+        </div>
     }
 }
 

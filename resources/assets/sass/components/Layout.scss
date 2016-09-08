@@ -11,5 +11,15 @@
   }
 }
 
+.Icon {
+  height: 60px;
+  line-height: 60px;
+  float: right;
+  padding: 10px 20px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 
 

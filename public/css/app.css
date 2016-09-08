@@ -451,6 +451,14 @@ th {
   .Layout__flash-message.Layout__Flash-message--Wrong {
     color: red; }
 
+.Icon {
+  height: 60px;
+  line-height: 60px;
+  float: right;
+  padding: 10px 20px; }
+  .Icon:hover {
+    cursor: pointer; }
+
 .solid {
   background-color: deepskyblue;
   border: 1px solid black; }
