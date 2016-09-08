@@ -16,11 +16,9 @@ class PlayNote extends React.Component {
     }
     initHowler(){
         sound = new Howl({
-            src: ['storage/' + this.props.sound]
+            src: `data:audio/mp3;base64,${this.props.sound}`
         });
     }
-
-
 
     render() {
         this.initHowler();

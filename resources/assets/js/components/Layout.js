@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {Grid, Row, Col} from 'react-bootstrap';
 import { Button, ButtonToolbar } from 'react-bootstrap';
 
@@ -6,32 +7,41 @@ import Note from './Note';
 import PlayNote from './PlayNote';
 
 var soundList = [
-    "a4.mp3",
-    "b4.mp3",
-    "c4.mp3",
-    "d4.mp3",
-    "e4.mp3",
-    "f4.mp3",
-    "g4.mp3",
-    "a5.mp3"
+    "A4",
+    "B4",
+    "C4",
+    "D4",
+    "E4",
+    "F4",
+    "G4",
+    "A5"
 ];
 
 class Layout extends React.Component {
     constructor(){
         super();
+        this.state = { sound: ''};
     }
-
     changeSound(){
 
     }
 
+    componentDidMount(){
+
+        let note = soundList[Math.floor(Math.random() * soundList.length)];
+        axios.get('/api/sounds/'+note)
+            .then(response => {
+                let file = response.data[0].file;
+                let filename = response.data[0].hashed;
+                this.setState({ sound: file });
+            });
+    }
 
     render() {
+
         const fillerStyle = {
             height: '25vh'
         };
-
-        let sound = "a4.mp3";
         return <Grid
             bsClass={"container"}
             fluid={true}>
@@ -54,7 +64,7 @@ class Layout extends React.Component {
                     mdOffset={4}
                 >
 
-                    <PlayNote sound={sound} /> {/*PlayNote Component*/}
+                    <PlayNote sound={this.state.sound} /> {/*PlayNote Component*/}
 
                 </Col>
             </Row>
@@ -63,9 +73,6 @@ class Layout extends React.Component {
                     md={2}
                     mdOffset={6}
                 >
-                    <ButtonToolbar>
-                        <Button onClick={this.changeSound} />
-                    </ButtonToolbar>
                 </Col>
             </Row>
         </Grid>

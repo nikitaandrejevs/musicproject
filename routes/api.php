@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AudioController;
 use Illuminate\Http\Request;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::get('/sounds/{title}', 'AudioController@getSound');
+Route::get('/sound', 'AudioController@getRandomSound');
+Route::get('/sounds', 'AudioController@getSimpleSounds');
+

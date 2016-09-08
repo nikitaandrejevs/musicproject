@@ -47,7 +47,7 @@ class audio_table_seeder extends Seeder
                     'hashed' => Hash::make($fileName),
                     'title' => $f[0],
                     'extension' => $f[1],
-                    'file' => $this->getFileContent($fileName)
+                    'file' => base64_encode($this->getFileContent($fileName))
                 ]);
             }
         }
