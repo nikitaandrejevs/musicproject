@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/sounds/{title}', 'AudioController@getSound');
-Route::get('/sound', 'AudioController@getRandomSound');
 Route::get('/sounds', 'AudioController@getSimpleSounds');
+Route::get('/sound', 'AudioController@getRandomSound');
+Route::get('/sound/{note}', 'AudioController@checkNote');
 

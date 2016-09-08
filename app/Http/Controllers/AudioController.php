@@ -21,6 +21,11 @@ class AudioController extends Controller
         $this->audio = $audio;
     }
 
+    public function checkNote($note, Request $request)
+    {
+        return $this->audio->checkNote($note, $request);
+    }
+
     public function getRandomSound()
     {
         return $this->audio->getRandomSound();

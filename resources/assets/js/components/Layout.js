@@ -6,35 +6,51 @@ import { Button, ButtonToolbar } from 'react-bootstrap';
 import Note from './Note';
 import PlayNote from './PlayNote';
 
-var soundList = [
-    "A4",
-    "B4",
-    "C4",
-    "D4",
-    "E4",
-    "F4",
-    "G4",
-    "A5"
-];
 
 class Layout extends React.Component {
     constructor(){
         super();
-        this.state = { sound: ''};
+        this.state = {
+            sound: '',
+            hashed: ''
+        };
+    }
+    checkNote(note){
+        console.log(this.state.hashed);
+        axios.get(`/api/sound/${note}?check=${this.state.hashed}`)
+            .then(response => {
+                console.log(response);
+                if (response.data == 1) {
+                    //show flashing message OK
+                    console.log("Right note! Congraz", note);
+                    this.changeSound();
+                }
+                else {
+                    //show flashing message OK
+                    console.log("Wrong note", note , " response: ", response.data);
+                }
+            })
+            .catch(error => { console.log(error); });
+
     }
     changeSound(){
-
+        axios.get('/api/sound/')
+            .then(response => {
+                let file = response.data.file;
+                let hashed = response.data.hashed;
+                this.setState({ sound: file, hashed });
+            })
+            .catch(error => { console.log(error); });
     }
 
     componentDidMount(){
-
-        let note = soundList[Math.floor(Math.random() * soundList.length)];
-        axios.get('/api/sounds/'+note)
+        axios.get('/api/sound/')
             .then(response => {
-                let file = response.data[0].file;
-                let filename = response.data[0].hashed;
-                this.setState({ sound: file });
-            });
+                let file = response.data.file;
+                let hashed = response.data.hashed;
+                this.setState({ sound: file, hashed });
+            })
+            .catch(error => { console.log(error); });
     }
 
     render() {
@@ -54,7 +70,7 @@ class Layout extends React.Component {
                     mdOffset={4}
                 >
 
-                    <Note/>  {/*Note Component*/}
+                    <Note checkNote={this.checkNote.bind(this)}/>  {/*Note Component*/}
 
                 </Col>
             </Row>
@@ -73,6 +89,7 @@ class Layout extends React.Component {
                     md={2}
                     mdOffset={6}
                 >
+
                 </Col>
             </Row>
         </Grid>

@@ -19,12 +19,11 @@ class Note extends React.Component {
             "B4",
             "C5"
         ];
-
         return (
             <ButtonToolbar bsClass="Note--align ">
                 {
                     notes.map(
-                        (elem, key) => <NoteButton key={key} note={elem} />
+                        (elem, key) => <NoteButton check={this.props.checkNote.bind(this)} key={key} note={elem} />
                     )
                 }
             </ButtonToolbar>

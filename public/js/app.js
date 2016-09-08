@@ -42643,8 +42643,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var soundList = ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "A5"];
-
 var Layout = function (_React$Component) {
     _inherits(Layout, _React$Component);
 
@@ -42653,23 +42651,57 @@ var Layout = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this));
 
-        _this.state = { sound: '' };
+        _this.state = {
+            sound: '',
+            hashed: ''
+        };
         return _this;
     }
 
     _createClass(Layout, [{
+        key: 'checkNote',
+        value: function checkNote(note) {
+            var _this2 = this;
+
+            console.log(this.state.hashed);
+            _axios2.default.get('/api/sound/' + note + '?check=' + this.state.hashed).then(function (response) {
+                console.log(response);
+                if (response.data == 1) {
+                    //show flashing message OK
+                    console.log("Right note! Congraz", note);
+                    _this2.changeSound();
+                } else {
+                    //show flashing message OK
+                    console.log("Wrong note", note, " response: ", response.data);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
         key: 'changeSound',
-        value: function changeSound() {}
+        value: function changeSound() {
+            var _this3 = this;
+
+            _axios2.default.get('/api/sound/').then(function (response) {
+                var file = response.data.file;
+                var hashed = response.data.hashed;
+                _this3.setState({ sound: file, hashed: hashed });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var _this2 = this;
+            var _this4 = this;
 
-            var note = soundList[Math.floor(Math.random() * soundList.length)];
-            _axios2.default.get('/api/sounds/' + note).then(function (response) {
-                var file = response.data[0].file;
-                var filename = response.data[0].hashed;
-                _this2.setState({ sound: file });
+            _axios2.default.get('/api/sound/').then(function (response) {
+                var file = response.data.file;
+                var hashed = response.data.hashed;
+                _this4.setState({ sound: file, hashed: hashed });
+            }).catch(function (error) {
+                console.log(error);
             });
         }
     }, {
@@ -42698,7 +42730,7 @@ var Layout = function (_React$Component) {
                             md: 4,
                             mdOffset: 4
                         },
-                        _react2.default.createElement(_Note2.default, null),
+                        _react2.default.createElement(_Note2.default, { checkNote: this.checkNote.bind(this) }),
                         '  '
                     )
                 ),
@@ -42771,13 +42803,14 @@ var Note = function (_React$Component) {
     _createClass(Note, [{
         key: 'render',
         value: function render() {
-            var notes = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+            var _this2 = this;
 
+            var notes = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
             return _react2.default.createElement(
                 _reactBootstrap.ButtonToolbar,
                 { bsClass: 'Note--align ' },
                 notes.map(function (elem, key) {
-                    return _react2.default.createElement(_NoteButton2.default, { key: key, note: elem });
+                    return _react2.default.createElement(_NoteButton2.default, { check: _this2.props.checkNote.bind(_this2), key: key, note: elem });
                 })
             );
         }
@@ -42821,6 +42854,12 @@ var NoteButton = function (_React$Component) {
     }
 
     _createClass(NoteButton, [{
+        key: 'handleClick',
+        value: function handleClick() {
+            // console.log(this.props);
+            this.props.check(this.props.note);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var noteButtonStyle = {
@@ -42846,6 +42885,7 @@ var NoteButton = function (_React$Component) {
                     _reactBootstrap.Button,
                     {
                         bsSize: 'large',
+                        onClick: this.handleClick.bind(this),
                         style: noteButtonStyle
                     },
                     ' ',
@@ -42902,13 +42942,13 @@ var PlayNote = function (_React$Component) {
         key: 'play',
         value: function play() {
             sound.play();
-            console.log(this.props.sound);
         }
     }, {
         key: 'initHowler',
         value: function initHowler() {
             sound = new Howl({
-                src: 'data:audio/mp3;base64,' + this.props.sound
+                src: 'data:audio/mp3;base64,' + this.props.sound, //For some reason the Howl is playing the sound, but still throwing an error "Uncaught (in promise) DOMException: Unable to decode audio data"
+                type: 'audio/mp3' //redundant
             });
         }
     }, {

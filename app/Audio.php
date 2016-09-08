@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Audio extends Model
 {
@@ -33,13 +34,20 @@ class Audio extends Model
         $result = $collection->filter(function($value) use ($note) {
             return $this->inArray($value->title, array($note));
         });
-
-        return collect($result['0'])->forget('title'); //dunno why, but originally that was a collection of '0' => Array
+        return collect($result->first())->forget('title'); //originally that was a collection of '0' => Array
     }
 
-    /**
-     *
-     */
+    public function checkNote($note, Request $request)
+    {
+
+        $check = $request->input('check');
+        $collection = Audio::select('title','hashed')->where('title', 'like', $note . "%")->get();
+        $collection = $this->pickRightNote($note, $collection);
+
+        return $collection->get('hashed') == $check ? 1 : 0; //response doesn't return boolean
+    }
+
+
     public function getRandomSound()
     {
         $note = $this->simpleNotes[array_rand($this->simpleNotes)];

@@ -10,6 +10,11 @@ class NoteButton extends React.Component {
         super();
     }
 
+
+    handleClick(){
+        // console.log(this.props);
+        this.props.check(this.props.note);
+    }
     render() {
         const noteButtonStyle = {
             flexGrow: '1'
@@ -31,6 +36,7 @@ class NoteButton extends React.Component {
         <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
             <Button
                 bsSize="large"
+                onClick={this.handleClick.bind(this)}
                 style={noteButtonStyle}
             > {this.props.note} </Button>
         </OverlayTrigger>);
