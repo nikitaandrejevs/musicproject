@@ -13,6 +13,8 @@ var fadeClass = [
     "Layout__flash-message"
 ];
 
+var timeOutID = '';
+
 class Layout extends React.Component {
     constructor(){
         super();
@@ -36,11 +38,15 @@ class Layout extends React.Component {
     }
 
     flashMessage(status){
+        if (timeOutID) {
+            if (fadeClass.length > 1) fadeClass.pop();
+            clearTimeout(timeOutID);
+        }
         this.setState({
             status
         });
         fadeClass.push(`Layout__flash-message--${status}`);
-        setTimeout(() => {
+        timeOutID = setTimeout(() => {
             fadeClass.pop();
             this.setState({
                 status: ''
@@ -75,13 +81,6 @@ class Layout extends React.Component {
     }
 
     componentDidMount(){
-        // axios.get('/api/sound/')
-        //     .then(response => {
-        //         let file = response.data.file;
-        //         let hashed = response.data.hashed;
-        //         this.setState({ sound: file, hashed });
-        //     })
-        //     .catch(error => { console.log(error); });
         this.changeSound();
     }
 
@@ -97,6 +96,15 @@ class Layout extends React.Component {
                         Violin Pitch Training application
                     </Modal.Title>
                 </Modal.Header>
+                <Modal.Body>
+                    <h3> Instructions </h3>
+                    <br/>
+                    <p> 1. Press on the note's scale sheet to play a random sound</p>
+                    <p> 2. Press on the Note's button to match the sound</p>
+                    <hr/>
+                    <p>If you match correctly, repeat.</p>
+                    <p>Have Fun!</p>
+                </Modal.Body>
             </Modal>
             <Grid
                 bsClass={"container"}

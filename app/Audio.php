@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 class Audio extends Model
 {
     private $simpleNotes = array(
-        "A4",
-        "B4",
         "C4",
         "D4",
         "E4",
         "F4",
         "G4",
-        "A5"
+        "A4",
+        "B4",
+        "C5"
     );
 
     public function inArray($value, $array)

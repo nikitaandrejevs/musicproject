@@ -42645,6 +42645,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var fadeClass = ["Layout__flash-message"];
 
+var timeOutID = '';
+
 var Layout = function (_React$Component) {
     _inherits(Layout, _React$Component);
 
@@ -42681,11 +42683,15 @@ var Layout = function (_React$Component) {
         value: function flashMessage(status) {
             var _this2 = this;
 
+            if (timeOutID) {
+                if (fadeClass.length > 1) fadeClass.pop();
+                clearTimeout(timeOutID);
+            }
             this.setState({
                 status: status
             });
             fadeClass.push('Layout__flash-message--' + status);
-            setTimeout(function () {
+            timeOutID = setTimeout(function () {
                 fadeClass.pop();
                 _this2.setState({
                     status: ''
@@ -42727,13 +42733,6 @@ var Layout = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // axios.get('/api/sound/')
-            //     .then(response => {
-            //         let file = response.data.file;
-            //         let hashed = response.data.hashed;
-            //         this.setState({ sound: file, hashed });
-            //     })
-            //     .catch(error => { console.log(error); });
             this.changeSound();
         }
     }, {
@@ -42756,6 +42755,37 @@ var Layout = function (_React$Component) {
                             _reactBootstrap.Modal.Title,
                             null,
                             'Violin Pitch Training application'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Body,
+                        null,
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            ' Instructions '
+                        ),
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            ' 1. Press on the note\'s scale sheet to play a random sound'
+                        ),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            ' 2. Press on the Note\'s button to match the sound'
+                        ),
+                        _react2.default.createElement('hr', null),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            'If you match correctly, repeat.'
+                        ),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            'Have Fun!'
                         )
                     )
                 ),

@@ -7,13 +7,15 @@ var Howl = require('howler').Howl;
 var sound;
 
 class PlayNote extends React.Component {
-    constructor(){
+    constructor() {
         super();
     }
-    play(){
+
+    play() {
         sound.play();
     }
-    initHowler(){
+
+    initHowler() {
         sound = new Howl({
             src: `data:audio/mp3;base64,${this.props.sound}`, //For some reason the Howl is playing the sound, but still throwing an error "Uncaught (in promise) DOMException: Unable to decode audio data"
             type: 'audio/mp3' //redundant
