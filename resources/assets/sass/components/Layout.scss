@@ -1,0 +1,15 @@
+.Layout__flash-message {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 60px;
+  padding-top: 30px;
+  &.Layout__Flash-message--Right {
+    color: darkolivegreen;
+  }
+  &.Layout__Flash-message--Wrong {
+    color: red;
+  }
+}
+
+
+

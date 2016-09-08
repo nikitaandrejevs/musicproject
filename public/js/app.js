@@ -42643,6 +42643,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var fadeClass = ["Layout__flash-message"];
+
 var Layout = function (_React$Component) {
     _inherits(Layout, _React$Component);
 
@@ -42653,26 +42655,39 @@ var Layout = function (_React$Component) {
 
         _this.state = {
             sound: '',
-            hashed: ''
+            hashed: '',
+            status: ''
         };
         return _this;
     }
 
     _createClass(Layout, [{
-        key: 'checkNote',
-        value: function checkNote(note) {
+        key: 'flashMessage',
+        value: function flashMessage(status) {
             var _this2 = this;
 
-            console.log(this.state.hashed);
+            this.setState({
+                status: status
+            });
+            fadeClass.push('Layout__flash-message--' + status);
+            setTimeout(function () {
+                fadeClass.pop();
+                _this2.setState({
+                    status: ''
+                });
+            }, 1000);
+        }
+    }, {
+        key: 'checkNote',
+        value: function checkNote(note) {
+            var _this3 = this;
+
             _axios2.default.get('/api/sound/' + note + '?check=' + this.state.hashed).then(function (response) {
-                console.log(response);
                 if (response.data == 1) {
-                    //show flashing message OK
-                    console.log("Right note! Congraz", note);
-                    _this2.changeSound();
+                    _this3.flashMessage('Right');
+                    _this3.changeSound();
                 } else {
-                    //show flashing message OK
-                    console.log("Wrong note", note, " response: ", response.data);
+                    _this3.flashMessage('Wrong');
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -42681,25 +42696,28 @@ var Layout = function (_React$Component) {
     }, {
         key: 'changeSound',
         value: function changeSound() {
-            var _this3 = this;
-
-            _axios2.default.get('/api/sound/').then(function (response) {
-                var file = response.data.file;
-                var hashed = response.data.hashed;
-                _this3.setState({ sound: file, hashed: hashed });
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
             var _this4 = this;
 
             _axios2.default.get('/api/sound/').then(function (response) {
                 var file = response.data.file;
                 var hashed = response.data.hashed;
                 _this4.setState({ sound: file, hashed: hashed });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: 'flashMessageType',
+        value: function flashMessageType() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this5 = this;
+
+            _axios2.default.get('/api/sound/').then(function (response) {
+                var file = response.data.file;
+                var hashed = response.data.hashed;
+                _this5.setState({ sound: file, hashed: hashed });
             }).catch(function (error) {
                 console.log(error);
             });
@@ -42719,7 +42737,7 @@ var Layout = function (_React$Component) {
                 _react2.default.createElement(
                     _reactBootstrap.Row,
                     null,
-                    _react2.default.createElement(_reactBootstrap.Col, { md: 12, style: fillerStyle })
+                    _react2.default.createElement(_reactBootstrap.Col, { md: 4, mdOffset: 4, style: fillerStyle })
                 ),
                 _react2.default.createElement(
                     _reactBootstrap.Row,
@@ -42750,10 +42768,21 @@ var Layout = function (_React$Component) {
                 _react2.default.createElement(
                     _reactBootstrap.Row,
                     null,
-                    _react2.default.createElement(_reactBootstrap.Col, {
-                        md: 2,
-                        mdOffset: 6
-                    })
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        { md: 4, mdOffset: 4, style: fillerStyle },
+                        _react2.default.createElement(
+                            _reactBootstrap.Fade,
+                            { timeout: 600, 'in': this.state.status ? true : false },
+                            _react2.default.createElement(
+                                'p',
+                                { className: fadeClass },
+                                ' ',
+                                this.state.status,
+                                ' '
+                            )
+                        )
+                    )
                 )
             );
         }

@@ -441,6 +441,16 @@ th {
   -webkit-box-flex: 1;
   flex-grow: 1; }
 
+.Layout__flash-message {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 60px;
+  padding-top: 30px; }
+  .Layout__flash-message.Layout__Flash-message--Right {
+    color: darkolivegreen; }
+  .Layout__flash-message.Layout__Flash-message--Wrong {
+    color: red; }
+
 .solid {
   background-color: deepskyblue;
   border: 1px solid black; }
